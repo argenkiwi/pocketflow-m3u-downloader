@@ -18,7 +18,7 @@ class ValidateM3UPath(AsyncNode):
                 choices=os.listdir(".") + ["Abort"],
             ),
         ]
-        
+
         answers = inquirer.prompt(questions)
         return answers
 
@@ -29,7 +29,8 @@ class ValidateM3UPath(AsyncNode):
             return "valid"
 
         return "invalid"
-        
+
+
 class ReadM3U(AsyncNode):
     async def prep_async(self, storage):
         return storage.get('m3u_file')
@@ -44,6 +45,38 @@ class ReadM3U(AsyncNode):
     async def post_async(self, storage, m3u_files, urls):
         storage["urls"] = urls
         return "read"
+
+
+class PromptUserAction(AsyncNode):
+    async def exec_async(self, _):
+        questions = [
+            inquirer.List(
+                "action",
+                message="What would you like to do?",
+                choices=["Download", "List"],
+            ),
+        ]
+
+        answers = inquirer.prompt(questions)
+        return answers["action"]
+
+    async def post_async(self, storage, _, answer):    
+        return answer.lower()
+
+class ListURLs(AsyncNode):
+    async def prep_async(self, storage):
+        return storage.get("urls", [])
+
+    async def exec_async(self, urls):
+        if urls:
+            print("Here are the URLs in the M3U file:")
+            for url in urls:
+                print(url)
+        else:
+            print("No URLs found in the M3U file.")
+          
+        return "listed"
+
 
 class DownloadFiles(AsyncParallelBatchNode):
     async def prep_async(self, storage):
