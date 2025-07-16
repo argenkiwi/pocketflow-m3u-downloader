@@ -1,6 +1,6 @@
 import argparse
 import asyncio
-from flow import M3UDownloaderFlow
+from flow import create_M3U_downloader_flow
 
 def main():
     parser = argparse.ArgumentParser(description="Download files from an M3U playlist.")
@@ -15,7 +15,7 @@ def main():
         "output_folder": output_folder
     }
 
-    flow = M3UDownloaderFlow()
+    flow = create_M3U_downloader_flow()
     asyncio.run(flow.run_async(storage))
 
 if __name__ == "__main__":
