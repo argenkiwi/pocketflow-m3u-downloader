@@ -2,3 +2,4 @@ pocketflow
 requests
 aiohttp
 aiofiles
+inquirer
