@@ -64,9 +64,11 @@ class PromptUserAction(AsyncNode):
         return storage.get("urls", [])
 
     async def exec_async(self, urls):
-        choices = ["List", "Download", "Quit"]
+        choices = ["List", "Quit"]
         if any("downloads.khinsider.com/game-soundtracks" in url for url in urls):
             choices.insert(1, "Resolve")
+        else:
+            choices.insert(1, "Download")
 
         questions = [
             inquirer.List(
